@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>REVERSE-PROMPT // FUTURE TERMINAL</title>
+    
+    <!-- SEO & Social Media Meta Tags -->
+    <meta name="description" content="專業級 AI 指令逆向工程工具。將卓越樣本轉化為精確算法，透過深度分析獲取隱性知識，建立您的專屬 AI 指令庫。">
+    <meta property="og:title" content="REVERSE-PROMPT // 未來感逆向工程儀表板">
+    <meta property="og:description" content="解構、重組、復刻成功。這是一個專為提示工程師設計的專業工具，支援多種場景的 AI 指令提取與邏輯分析。">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1639322537228-f710d846310a?q=80&w=1200&h=630&auto=format&fit=crop">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="author" content="NEURAL_REVERSE_LABS">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400;700&family=Space+Mono&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --obsidian: #05070a;
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --neon-indigo: #6366f1;
+            --neon-cyan: #22d3ee;
+        }
+
+        body {
+            background-color: var(--obsidian);
+            color: #e2e8f0;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .bg-grid {
+            background-image: radial-gradient(circle at 2px 2px, rgba(255,255,255,0.05) 1px, transparent 0);
+            background-size: 30px 30px;
+        }
+
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-top: 1px solid rgba(255,255,255,0.2);
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.7);
+        }
+
+        .neon-border-gradient {
+            position: relative;
+            background: linear-gradient(var(--obsidian), var(--obsidian)) padding-box,
+                        linear-gradient(135deg, var(--neon-indigo), var(--neon-cyan)) border-box;
+            border: 1px solid transparent;
+        }
+
+        .scene-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: rgba(30, 41, 59, 0.4);
+        }
+
+        @media (hover: hover) {
+            .scene-card:hover {
+                background: rgba(99, 102, 241, 0.1);
+                border-color: var(--neon-indigo);
+                transform: translateY(-2px);
+                box-shadow: 0 0 15px rgba(99, 102, 241, 0.2);
+            }
+        }
+
+        .scene-card:active {
+            transform: scale(0.97);
+            background: rgba(99, 102, 241, 0.15);
+        }
+
+        .mono { font-family: 'Space Mono', monospace; }
+
+        .glow-text {
+            text-shadow: 0 0 15px rgba(99, 102, 241, 0.6);
+        }
+
+        input, textarea {
+            background: rgba(15, 23, 42, 0.8) !important;
+            border: 1px solid var(--glass-border) !important;
+            color: white !important;
+            text-align: center;
+            font-size: 16px !important;
+        }
+
+        input:focus, textarea:focus {
+            border-color: var(--neon-cyan) !important;
+            outline: none;
+            box-shadow: 0 0 12px rgba(34, 211, 238, 0.3);
+        }
+
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: var(--obsidian); }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
+        
+        .max-w-content {
+            max-width: 900px;
+        }
+
+        @media (max-width: 640px) {
+            .glow-text {
+                font-size: 2.5rem !important;
+            }
+            .glass-panel {
+                padding-left: 1.25rem !important;
+                padding-right: 1.25rem !important;
+            }
+        }
+    </style>
+</head>
+<body class="bg-grid min-h-screen">
+
+    <div class="fixed top-0 left-0 w-full h-full pointer-events-none z-0">
+        <div class="absolute top-[-5%] left-[-5%] w-[50%] h-[50%] bg-indigo-900 rounded-full blur-[100px] opacity-20"></div>
+        <div class="absolute bottom-[-5%] right-[-5%] w-[50%] h-[50%] bg-cyan-900 rounded-full blur-[100px] opacity-20"></div>
+    </div>
+
+    <nav class="sticky top-0 z-50 border-b border-white/10 bg-black/70 backdrop-blur-lg px-4 sm:px-6 py-3">
+        <div class="max-w-7xl mx-auto flex justify-center items-center relative">
+            <div class="flex items-center space-x-2">
+                <div class="w-7 h-7 bg-gradient-to-br from-indigo-500 to-cyan-400 rounded flex items-center justify-center font-bold text-black italic text-sm">R</div>
+                <span class="mono font-bold tracking-widest text-white text-xs sm:text-sm">REVERSE_ENGINEER</span>
+            </div>
+            <div class="absolute right-0 text-[8px] sm:text-[10px] mono text-indigo-400 tracking-widest uppercase hidden sm:block">Status: Optimal</div>
+        </div>
+    </nav>
+
+    <main class="max-w-content mx-auto px-4 sm:px-6 py-8 sm:py-16 relative flex flex-col items-center">
+        
+        <header class="mb-10 sm:mb-20 text-center w-full">
+            <h1 class="text-4xl sm:text-6xl font-light tracking-tighter text-white glow-text mb-4 sm:mb-6">
+                解構。重組。<br class="sm:hidden"><span class="font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-cyan-300">復刻成功。</span>
+            </h1>
+            <p class="text-slate-400 text-sm sm:text-base font-light leading-relaxed mx-auto max-w-lg px-4">
+                將卓越樣本轉化為精確算法。透過逆向工程獲取隱性知識，建立您的專屬 AI 指令庫。
+            </p>
+        </header>
+
+        <section class="w-full mb-10 sm:mb-16">
+            <div class="flex items-center justify-center space-x-3 mb-6 sm:mb-10">
+                <div class="h-[1px] w-12 sm:w-20 bg-gradient-to-r from-transparent to-white/10"></div>
+                <h2 class="mono text-[10px] sm:text-xs tracking-[0.3em] text-indigo-400 uppercase">Engine_Modules</h2>
+                <div class="h-[1px] w-12 sm:w-20 bg-gradient-to-l from-transparent to-white/10"></div>
+            </div>
+            
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
+                <button onclick="generatePreset('social')" class="scene-card border border-white/10 p-4 sm:p-6 rounded-2xl text-center group">
+                    <span class="block text-2xl sm:text-3xl mb-2 sm:mb-3 group-hover:scale-110 transition-transform">📱</span>
+                    <span class="block text-xs sm:text-sm font-bold text-white mb-0.5 sm:mb-1">社群動態</span>
+                    <span class="block text-[8px] sm:text-[10px] text-slate-500 mono">SOCIAL_HOOK</span>
+                </button>
+                <button onclick="generatePreset('email')" class="scene-card border border-white/10 p-4 sm:p-6 rounded-2xl text-center group">
+                    <span class="block text-2xl sm:text-3xl mb-2 sm:mb-3 group-hover:scale-110 transition-transform">✉️</span>
+                    <span class="block text-xs sm:text-sm font-bold text-white mb-0.5 sm:mb-1">開發信</span>
+                    <span class="block text-[8px] sm:text-[10px] text-slate-500 mono">OUTREACH</span>
+                </button>
+                <button onclick="generatePreset('art')" class="scene-card border border-white/10 p-4 sm:p-6 rounded-2xl text-center group">
+                    <span class="block text-2xl sm:text-3xl mb-2 sm:mb-3 group-hover:scale-110 transition-transform">🎨</span>
+                    <span class="block text-xs sm:text-sm font-bold text-white mb-0.5 sm:mb-1">視覺指令</span>
+                    <span class="block text-[8px] sm:text-[10px] text-slate-500 mono">ART_GEN</span>
+                </button>
+                <button onclick="generatePreset('cs')" class="scene-card border border-white/10 p-4 sm:p-6 rounded-2xl text-center group">
+                    <span class="block text-2xl sm:text-3xl mb-2 sm:mb-3 group-hover:scale-110 transition-transform">💬</span>
+                    <span class="block text-xs sm:text-sm font-bold text-white mb-0.5 sm:mb-1">客服回應</span>
+                    <span class="block text-[8px] sm:text-[10px] text-slate-500 mono">CRM_REPLY</span>
+                </button>
+                <button onclick="generatePreset('meeting')" class="scene-card border border-white/10 p-4 sm:p-6 rounded-2xl text-center group">
+                    <span class="block text-2xl sm:text-3xl mb-2 sm:mb-3 group-hover:scale-110 transition-transform">📝</span>
+                    <span class="block text-xs sm:text-sm font-bold text-white mb-0.5 sm:mb-1">會議摘要</span>
+                    <span class="block text-[8px] sm:text-[10px] text-slate-500 mono">MEET_LOG</span>
+                </button>
+                <button onclick="generatePreset('proposal')" class="scene-card border border-white/10 p-4 sm:p-6 rounded-2xl text-center group">
+                    <span class="block text-2xl sm:text-3xl mb-2 sm:mb-3 group-hover:scale-110 transition-transform">📊</span>
+                    <span class="block text-xs sm:text-sm font-bold text-white mb-0.5 sm:mb-1">產品企劃</span>
+                    <span class="block text-[8px] sm:text-[10px] text-slate-500 mono">PROD_PLAN</span>
+                </button>
+                <button onclick="generatePreset('feedback')" class="scene-card border border-white/10 p-4 sm:p-6 rounded-2xl text-center group">
+                    <span class="block text-2xl sm:text-3xl mb-2 sm:mb-3 group-hover:scale-110 transition-transform">🤝</span>
+                    <span class="block text-xs sm:text-sm font-bold text-white mb-0.5 sm:mb-1">主管回饋</span>
+                    <span class="block text-[8px] sm:text-[10px] text-slate-500 mono">FEEDBACK</span>
+                </button>
+                <button onclick="generatePreset('strategy')" class="scene-card border border-white/10 p-4 sm:p-6 rounded-2xl text-center group">
+                    <span class="block text-2xl sm:text-3xl mb-2 sm:mb-3 group-hover:scale-110 transition-transform">💡</span>
+                    <span class="block text-xs sm:text-sm font-bold text-white mb-0.5 sm:mb-1">策略簡報</span>
+                    <span class="block text-[8px] sm:text-[10px] text-slate-500 mono">STRATEGY</span>
+                </button>
+                <button onclick="generatePreset('insight')" class="scene-card border border-white/10 p-4 sm:p-6 rounded-2xl text-center group">
+                    <span class="block text-2xl sm:text-3xl mb-2 sm:mb-3 group-hover:scale-110 transition-transform">📖</span>
+                    <span class="block text-xs sm:text-sm font-bold text-white mb-0.5 sm:mb-1">深度觀點</span>
+                    <span class="block text-[8px] sm:text-[10px] text-slate-500 mono">INSIGHT</span>
+                </button>
+            </div>
+        </section>
+
+        <section class="glass-panel p-6 sm:p-10 rounded-3xl neon-border-gradient w-full mb-10 sm:mb-16 text-center">
+            <h2 class="text-lg sm:text-xl font-bold text-white mb-6 sm:mb-8 flex items-center justify-center">
+                <span class="w-1.5 h-1.5 bg-cyan-400 rounded-full mr-2 shadow-[0_0_8px_#22d3ee]"></span>
+                特殊場景自定義
+            </h2>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 mb-4 sm:mb-6">
+                <div class="space-y-1.5 text-center">
+                    <label class="mono text-[8px] sm:text-[10px] uppercase tracking-widest text-slate-500">Industry_Domain</label>
+                    <input type="text" id="industryInput" placeholder="EX: FINTECH..." class="w-full p-3 sm:p-4 rounded-xl font-light">
+                </div>
+                <div class="space-y-1.5 text-center">
+                    <label class="mono text-[8px] sm:text-[10px] uppercase tracking-widest text-slate-500">Target_Type</label>
+                    <input type="text" id="targetType" placeholder="EX: REPORT..." class="w-full p-3 sm:p-4 rounded-xl font-light">
+                </div>
+            </div>
+            <div class="space-y-1.5 text-center">
+                <label class="mono text-[8px] sm:text-[10px] uppercase tracking-widest text-slate-500">Analytical_Goals</label>
+                <textarea id="customGoal" rows="2" placeholder="輸入分析重點..." class="w-full p-3 sm:p-4 rounded-xl font-light resize-none text-center"></textarea>
+            </div>
+
+            <button onclick="generateCustom()" class="w-full max-w-xs mt-6 sm:mt-8 bg-gradient-to-r from-indigo-600 to-cyan-500 hover:from-indigo-500 hover:to-cyan-400 text-white text-sm sm:text-base font-bold py-3.5 sm:py-4 rounded-xl shadow-lg transition-all active:scale-[0.98] mx-auto block">
+                INITIALIZE // 執行生成
+            </button>
+        </section>
+
+        <section class="w-full mb-12">
+            <div id="resultPlaceholder" class="h-48 sm:h-64 border border-dashed border-white/10 rounded-3xl flex flex-col items-center justify-center p-8 text-center text-slate-600">
+                <div class="text-3xl mb-3 opacity-20 animate-pulse">📡</div>
+                <p class="mono text-[10px] uppercase tracking-widest px-4">Waiting for parameters...</p>
+            </div>
+
+            <div id="resultArea" class="hidden flex flex-col items-center w-full">
+                <div class="flex items-center justify-between w-full mb-3 px-1">
+                    <h3 class="mono text-[10px] uppercase tracking-widest text-cyan-400">Generated_Result</h3>
+                    <button onclick="copyContent()" id="copyBtn" class="text-[9px] sm:text-[10px] mono bg-white/5 text-white px-4 py-1.5 rounded-full border border-white/10 transition-all active:bg-cyan-500 active:text-black">COPY_PROMPT</button>
+                </div>
+                <div id="promptOutput" class="w-full glass-panel p-6 sm:p-10 rounded-3xl text-indigo-100 font-mono text-xs sm:text-sm leading-relaxed whitespace-pre-wrap border-l-4 border-indigo-500 overflow-y-auto max-h-[500px] text-left"></div>
+                
+                <div class="mt-6 p-4 sm:p-6 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 w-full text-center">
+                    <p class="text-[10px] sm:text-xs text-indigo-300 mono leading-snug">
+                        [ NOTICE ]: 複製後將指令與您的樣本貼給 AI 即可開始。
+                    </p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="max-w-7xl mx-auto px-6 py-10 border-t border-white/5 text-center">
+        <p class="mono text-[8px] sm:text-[10px] text-slate-600 tracking-widest uppercase">© 2024 NEURAL_REVERSE_LABS</p>
+    </footer>
+
+    <script>
+        const PRESETS = {
+            social: { industry: "社群行銷", target: "高互動社群貼文", goal: "分析注意力分配、鉤子設計與誘導讀者互動的情緒決策。" },
+            email: { industry: "商務開發", target: "高回覆率開發信", goal: "分析信任建立時點、資訊省略決策與行動邀請的心理門檻。" },
+            art: { industry: "視覺設計", target: "高品質 AI 參考圖", goal: "分析構圖引導、光影情緒決策與可轉換為參數的視覺特徵。" },
+            cs: { industry: "客戶關係管理", target: "成功安撫客戶的回應範例", goal: "分析情緒轉向時機、責任語言規避方式與降低衝突的行動設計。" },
+            meeting: { industry: "行政效率", target: "高品質會議摘要", goal: "分析資訊過濾機制、決策點提前呈現邏輯與讀者焦慮解決方案。" },
+            proposal: { industry: "產品研發", target: "獲准執行的產品企劃", goal: "分析論證順序、風險框架化處理與核心決策指標。" },
+            feedback: { industry: "組織管理", target: "有效的主管回饋對話", goal: "分析行為導向修正策略、心理安全感建立與肯定/指正的配比。" },
+            strategy: { industry: "高層溝通", target: "引導決策的策略簡報", goal: "分析決策點引導機制、風險承受閾值處理與資訊斷層銜接邏輯。" },
+            insight: { industry: "思想領袖", target: "具備深度洞察的觀點長文", goal: "分析經驗轉化為普遍洞察的路徑、去說教化設計與結構共鳴模式。" }
+        };
+
+        function generatePreset(key) {
+            const data = PRESETS[key];
+            const prompt = buildPrompt(data.industry, data.target, data.goal);
+            showResult(prompt);
+        }
+
+        function generateCustom() {
+            const industry = document.getElementById('industryInput').value || "特定專業領域";
+            const target = document.getElementById('targetType').value || "專業成果樣本";
+            const goal = document.getElementById('customGoal').value || "分析其核心決策邏輯、結構安排與不可變規則。";
+            
+            const prompt = buildPrompt(industry, target, goal);
+            showResult(prompt);
+        }
+
+        function buildPrompt(industry, target, goal) {
+            return `請扮演「${industry}」領域的『資深決策架構分析師』與『頂尖提示工程師』。
+
+【分析目標】
+我將提供一份已完成的【${target}】樣本。你的任務是進行逆向工程，將此成果背後的內隱知識轉化為可重複執行的「指令集」。
+
+【執行任務 - 基於 Google 提示策略優化】
+1. **意圖識別**：辨識此樣本解決了什麼核心痛點？其目標受眾的心理狀態為何？
+2. **決策特徵分析**：
+   - **關鍵選擇**：${goal}
+   - **負面排除**：此成果刻意避開了哪些平庸或錯誤的路徑？
+   - **權衡逻辑**：分析作者在 A/B 選擇中為何選擇 A？其判斷標準是什麼？
+3. **規則抽象化 (Rules-as-Code)**：
+   - 將分析結果整理為一組結構化規則。
+   - 區分「硬性框架 (不可變)」與「內容素材 (可變)」。
+   - 生成一個可讓第三人使用的「生成指令 (Prompt)」。
+
+【禁止事項】
+- 禁止重寫或模仿內容。
+- 禁止提供主觀評價或讚美。
+- 必須以「規則與邏輯」為輸出核心，避免段落敘述。
+
+【樣本內容如下】
+[在此貼入您的樣本內容]`;
+        }
+
+        function showResult(text) {
+            document.getElementById('resultPlaceholder').classList.add('hidden');
+            const resultArea = document.getElementById('resultArea');
+            const output = document.getElementById('promptOutput');
+            output.textContent = text;
+            resultArea.classList.remove('hidden');
+            
+            setTimeout(() => {
+                const yOffset = -100; 
+                const y = resultArea.getBoundingClientRect().top + window.pageYOffset + yOffset;
+                window.scrollTo({top: y, behavior: 'smooth'});
+            }, 100);
+        }
+
+        function copyContent() {
+            const text = document.getElementById('promptOutput').textContent;
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+            
+            const btn = document.getElementById('copyBtn');
+            const original = btn.textContent;
+            btn.textContent = 'COPIED!';
+            btn.classList.add('bg-cyan-500', 'text-black');
+            setTimeout(() => {
+                btn.textContent = original;
+                btn.classList.remove('bg-cyan-500', 'text-black');
+            }, 2000);
+        }
+    </script>
+</body>
+</html>
